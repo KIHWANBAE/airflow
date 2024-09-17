@@ -20,6 +20,7 @@ with DAG(
         headers = {'Content-Type' : 'application/json',
                    'charset' : 'utf-8',
                    'Accept' : '*/*'}
+        xcom_push=True
     )
 
     @task(task_id = 'python_2') 
@@ -32,4 +33,3 @@ with DAG(
         pprint(json.loads(result))
 
     tb_real_estate_info >> python_2()
-
