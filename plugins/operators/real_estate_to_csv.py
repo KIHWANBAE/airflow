@@ -18,8 +18,7 @@ class RealEstateToCSVOperator(BaseOperator):
     def execute(self, context):
         import os
 
-        connection = BaseHook.get_connection(self.http_conn_id)
-        self.base_url = f'http://{connection.host}:8088/{self.endpoint}'
+        self.base_url = f'http://openapi.seoul.go.kr:8088/{self.endpoint}'
 
         total_row_df = pd.DataFrame()
         start_row = 1
