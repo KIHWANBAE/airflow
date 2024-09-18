@@ -28,7 +28,7 @@ class RealEstateToCSVOperator(BaseOperator):
             self.log.info(f'끝:{end_row}')
             row_df = self.call_api(self.base_url, start_row, end_row)
             total_row_df = pd.concat([total_row_df, row_df])
-            if len(row_df) < 1000:
+            if len(row_df) = 1000:
                 break
             else:
                 start_row = end_row + 1
