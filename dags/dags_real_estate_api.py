@@ -16,7 +16,7 @@ with DAG(
     '''서울시 실거래가 정보'''
     tb_real_estate_status = RealEstateToCSVOperator(
         task_id='tb_real_estate_status',
-        dataset_nm='TbRealEstateStatus',
+        dataset_nm='tbLnOpendataRtmsV',
         path='/opt/airflow/files/RealEstateStatus/{{data_interval_end.in_timezone("Asia/Seoul") | ds_nodash}}',
         file_name='TbRealEstateStatus.csv'
     )
@@ -24,7 +24,7 @@ with DAG(
     '''서울시 전월세가 정보'''
     tb_real_estate_status_m = RealEstateToCSVOperator(
         task_id='tb_real_estate_status_m',
-        dataset_nm='TbRealEstateStatus_m',
+        dataset_nm='tbLnOpendataRentV',
         path='/opt/airflow/files/RealEstateStatus_m/{{data_interval_end.in_timezone("Asia/Seoul") | ds_nodash}}',
         file_name='TbRealEstateStatus_m.csv'
     )
