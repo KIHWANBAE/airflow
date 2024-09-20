@@ -32,7 +32,7 @@ with DAG(
         op_args={'postgres_conn_id':'conn-db-postgres-custom'}
     )
 
-    insrt_postgres
+    insrt_postgres_with_hook
 
                      
 
