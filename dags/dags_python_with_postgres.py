@@ -11,7 +11,6 @@ with DAG(
     
 
     def insrt_postgres(postgres_conn_id, **kwargs):
-        import psycopg2
         from contextlib import closing
         from airflow.providers.postgres.hooks.postgres import PostgresHook
 
@@ -33,7 +32,7 @@ with DAG(
         op_args={'postgres_conn_id':'conn-db-postgres-custom'}
     )
 
-    insrt_postgres_with_hook
+    insrt_postgres
 
                      
 
