@@ -24,47 +24,24 @@ class CustomPostgresHook(BaseHook):
         self.log.info('적재 대상파일:' + file_name)
         self.log.info('테이블 :' + table_name)
         self.get_conn()
-        header = 0 if is_header else None                       
-        if_exists = 'replace' if is_replace else 'append'       
+        header = 0 if is_header else None                       # is_header = True면 0, False면 None
+        if_exists = 'replace' if is_replace else 'append'       # is_replace = True면 replace, False면 append
+        file_df = pd.read_csv(file_name, header=header, delimiter=delimiter)
 
-        # CSV 파일을 읽어옴
-        try:
-            file_df = pd.read_csv(file_name, header=header, delimiter=delimiter)
-        except Exception as e:
-            self.log.error(f"파일 로드 중 오류 발생: {e}")
-            return
-
-        # 데이터베이스의 테이블 컬럼 정보 가져오기
+        for col in file_df.columns:                             
+            try:
+                # string 문자열이 아닐 경우 continue
+                file_df[col] = file_df[col].str.replace('\r\n','')      # 줄넘김 및 ^M 제거
+                self.log.info(f'{table_name}.{col}: 개행문자 제거')
+            except:
+                continue 
+                
+        self.log.info('적재 건수:' + str(len(file_df)))
         uri = f'postgresql://{self.user}:{self.password}@{self.host}/{self.dbname}'
         engine = create_engine(uri)
-        
-        # 테이블의 컬럼 목록 가져오기
-        table_columns = engine.execute(f"SELECT column_name FROM information_schema.columns WHERE table_name='{table_name}'").fetchall()
-        table_columns = [col[0] for col in table_columns]
-        
-        # 각 행의 컬럼 개수 확인 후, 예상된 컬럼 수와 맞지 않는 행은 제거
-        correct_column_count = len(table_columns)
-        file_df = file_df[file_df.apply(lambda row: len(row) == correct_column_count, axis=1)]
-
-        self.log.info(f'유효한 행 개수: {len(file_df)}')
-
-        # 불필요한 개행문자 제거
-        for col in file_df.columns:
-            try:
-                file_df[col] = file_df[col].astype(str).str.replace('\r\n','')  # 개행문자 제거
-                self.log.info(f'{table_name}.{col}: 개행문자 제거')
-            except Exception as e:
-                self.log.warning(f'{table_name}.{col}: 처리 중 오류 발생 - {e}')
-                continue 
-                    
-        # 테이블에 적재
-        try:
-            file_df.to_sql(name=table_name,
+        file_df.to_sql(name=table_name,
                             con=engine,
                             schema='public',
                             if_exists=if_exists,
                             index=False
                         )
-            self.log.info(f'{table_name} 테이블에 데이터 적재 완료')
-        except Exception as e:
-            self.log.error(f'{table_name} 테이블 적재 중 오류 발생: {e}')

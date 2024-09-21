@@ -17,6 +17,6 @@ with DAG(
         task_id = 'insrt_postgres',
         python_callable=insrt_postgres,
         op_kwargs={'postgres_conn_id':'conn-db-postgres-custom',
-                   'tbl_nm':'TbRealEstateStatus_bulk2',
+                   'tbl_nm':'tbrealestateStatus_bulk2',
                    'file_nm':'/opt/airflow/files/RealEstateStatus/{{data_interval_end.in_timezone("Asia/Seoul") | ds_nodash}}/TbRealEstateStatus.csv'}
     )
