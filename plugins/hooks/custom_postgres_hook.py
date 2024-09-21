@@ -29,7 +29,7 @@ class CustomPostgresHook(BaseHook):
 
         # CSV 파일을 읽어옴
         try:
-            file_df = pd.read_csv(file_name, header=header, delimiter=delimiter, error_bad_lines=False, warn_bad_lines=True)
+            file_df = pd.read_csv(file_name, header=header, delimiter=delimiter)
         except Exception as e:
             self.log.error(f"파일 로드 중 오류 발생: {e}")
             return
