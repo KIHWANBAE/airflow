@@ -43,7 +43,7 @@ with DAG(
         task_id='sensor_task',
         python_callable=check_api_update,
         op_kwargs={'http_conn_id':'openapi.seoul.go.kr',
-                   'endpoint':'{{var.value.apikey_openapi_seoul_go_kr}}/json/tbLnOpendataRtmsV',
+                   'endpoint':'{{var.value.apikey_openapi_seoul}}/json/tbLnOpendataRtmsV',
                    'base_dt_col':'CTRT_DAY'},
         poke_interval=600,   #10분
         mode='reschedule'
