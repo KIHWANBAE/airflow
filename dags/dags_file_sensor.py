@@ -12,7 +12,7 @@ with DAG(
     tbRealEstateStatusNew_sensor = FileSensor(
         task_id = 'tbRealEstateStatusNew_sensor',
         fs_conn_id= 'conn_file_opt_airflow_files',
-        filepath= 'tbRealEstateStatusNew/{{data_interval_end.in_timezone("Asia/Seoul") | ds_nodash}}/tbRealEstateStatusNew.csv',
+        filepath= 'RealEstateStatus/{{data_interval_end.in_timezone("Asia/Seoul") | ds_nodash}}/TbRealEstateStatus.csv',
         recursive=False,
         poke_interval=60,
         timeout=60*60*24,
