@@ -8,10 +8,11 @@ with DAG(
     schedule='0 7 * * *',
     catchup=False
 ) as dag:
+    
     tbRealEstateStatusNew_sensor = FileSensor(
         task_id = 'tbRealEstateStatusNew_sensor',
         fs_conn_id= 'conn_file_opt_airflow_files',
-        filepath= 'tbRealEstateStatusNew/{{data_interval_end.in_timezone("Asia/Seoul") | ds_nodash}}/tbRealEstateStatusNew.csv'
+        filepath= 'tbRealEstateStatusNew/{{data_interval_end.in_timezone("Asia/Seoul") | ds_nodash}}/tbRealEstateStatusNew.csv',
         recursive=False,
         poke_interval=60,
         timeout=60*60*24,
